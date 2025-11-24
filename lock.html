@@ -2,46 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Grove Portal — Admin</title>
+  <title>Grove Portal — Admin Login</title>
   <link rel="stylesheet" href="style.css" />
   <script type="module" src="src/assets/js/counter.js" defer></script>
 </head>
 <body>
-  <main style="max-width:600px;margin:40px auto;">
+  <main class="container small">
     <h1>Admin Login</h1>
 
-    <form id="login-form">
-      <label>Username</label><br />
-      <input id="username" type="text" required /><br />
-      <label>Password</label><br />
-      <input id="password" type="password" required /><br />
-      <button type="submit">Login</button>
+    <form id="login-form" class="form">
+      <label>Username</label>
+      <input id="username" type="text" required />
+
+      <label>Password</label>
+      <input id="password" type="password" required />
+
+      <div class="controls">
+        <button type="submit">Login</button>
+      </div>
     </form>
   </main>
 
   <script type="module">
-    import { incrementDay, getDay } from './src/assets/js/counter.js';
-    import { CONFIG } from './src/assets/js/config.example.js';
-    // If you created config.local.js with real creds, code will pick that for supabase,
-    // but CONFIG import here points to example for login check. We'll do a fallback:
-    // Try local config if present:
-    (async () => {
-      let localConfig = null;
-      try {
-        localConfig = (await import('./src/assets/js/config.local.js')).CONFIG;
-      } catch (e) {
-        // no local config
-      }
-      const CONF = localConfig || CONFIG;
+    import { incrementDay } from './src/assets/js/counter.js';
+    import { CONFIG } from './src/assets/js/config.js';
 
+    (function() {
       const form = document.getElementById('login-form');
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
-        if (username === CONF.adminUsername && password === CONF.adminPassword) {
-          localStorage.setItem('adminLoggedIn', 'true');
-          await incrementDay(); // small confirmation action
+
+        if (username === CONFIG.adminUsername && password === CONFIG.adminPassword) {
+          // mark admin session locally
+          localStorage.setItem('grove_admin_logged_in', 'true');
+          // small confirmation action
+          await incrementDay();
           window.location.href = 'dashboard.html';
         } else {
           alert('Invalid credentials');
