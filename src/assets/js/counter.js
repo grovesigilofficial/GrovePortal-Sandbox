@@ -1,86 +1,80 @@
 // src/assets/js/counter.js
-import { supabase } from './supabase.js';
+// Local-only counter + admin helpers (no backend)
 
-// Safe DOM getters (may be missing on some pages)
-const getEl = id => document.getElementById(id);
+// Config import
+import { CONFIG } from './config.js';
 
-// exportable functions for pages that call them directly
+// localStorage access
+const KEY = CONFIG.LOCAL_COUNTER_KEY || 'grove_uberman_day';
+
+// helper to read/write
+export function getDayValue() {
+  const raw = localStorage.getItem(KEY);
+  const n = parseInt(raw, 10);
+  return Number.isNaN(n) ? 0 : n;
+}
+
+export function setDayValue(val) {
+  const num = Number(val) || 0;
+  localStorage.setItem(KEY, String(num));
+  return num;
+}
+
+export function incrementDayValue() {
+  const cur = getDayValue();
+  return setDayValue(cur + 1);
+}
+
+export function resetDayValue() {
+  return setDayValue(0);
+}
+
+// DOM helpers
+function el(id) { return document.getElementById(id); }
+
+// Update display element if present
+export function updateCounterDisplay() {
+  const display = el('counter-display');
+  if (!display) return;
+  display.textContent = String(getDayValue());
+}
+
+// Wire buttons / auto-init
+function attachListeners() {
+  const incBtn = el('increment-btn');
+  const resetBtn = el('reset-btn');
+
+  if (incBtn) incBtn.addEventListener('click', async (e) => {
+    incrementDayValue();
+    updateCounterDisplay();
+  });
+
+  if (resetBtn) resetBtn.addEventListener('click', async (e) => {
+    resetDayValue();
+    updateCounterDisplay();
+  });
+}
+
+// Exported functions for external pages
 export async function getDay() {
-  try {
-    const { data, error } = await supabase
-      .from('uberman_counter')
-      .select('day')
-      .limit(1)
-      .single();
-
-    if (error) {
-      console.error('Supabase getDay error:', error);
-      return 0;
-    }
-    return data?.day ?? 0;
-  } catch (e) {
-    console.error('getDay failed:', e);
-    return 0;
-  }
+  return getDayValue();
 }
-
-export async function setDay(val) {
-  try {
-    // Check existing row
-    const { data: existing, error: fetchError } = await supabase
-      .from('uberman_counter')
-      .select('id')
-      .limit(1)
-      .single();
-
-    if (fetchError) {
-      console.error('setDay fetchError:', fetchError);
-      return;
-    }
-
-    if (existing && existing.id) {
-      const { error } = await supabase
-        .from('uberman_counter')
-        .update({ day: val })
-        .eq('id', existing.id);
-
-      if (error) console.error('Error updating day:', error);
-    } else {
-      const { error } = await supabase
-        .from('uberman_counter')
-        .insert({ day: val });
-
-      if (error) console.error('Error inserting day:', error);
-    }
-    await updateCounterDisplay();
-  } catch (e) {
-    console.error('setDay failed:', e);
-  }
+export async function setDay(n) {
+  return setDayValue(n);
 }
-
 export async function incrementDay() {
-  const cur = await getDay();
-  await setDay(cur + 1);
-}
-
-export async function resetDay() {
-  await setDay(0);
-}
-
-export async function updateCounterDisplay() {
-  const el = getEl('counter-display');
-  if (!el) return;
-  el.textContent = String(await getDay());
-}
-
-// Attach to DOM where appropriate
-document.addEventListener('DOMContentLoaded', () => {
-  // Init display if present
+  const v = incrementDayValue();
   updateCounterDisplay();
+  return v;
+}
+export async function resetDay() {
+  const v = resetDayValue();
+  updateCounterDisplay();
+  return v;
+}
 
-  const inc = getEl('increment-btn');
-  const res = getEl('reset-btn');
-
-  if (inc) inc.addEventListener('click', incrementDay);
-  if (res) res.addEventListener('click', resetDay);
+// Auto init on pages that include this module
+document.addEventListener('DOMContentLoaded', () => {
+  updateCounterDisplay();
+  attachListeners();
 });
