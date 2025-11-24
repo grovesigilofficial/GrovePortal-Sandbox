@@ -7,11 +7,11 @@
   <script type="module" src="src/assets/js/counter.js" defer></script>
 </head>
 <body>
-  <main style="max-width:900px;margin:40px auto;">
+  <main class="container">
     <h1>Dashboard</h1>
     <h2>Uberman Sleep Day: <span id="counter-display">0</span></h2>
 
-    <div style="margin-top:20px;">
+    <div class="controls">
       <button id="increment-btn">Increment Day</button>
       <button id="reset-btn">Reset Day</button>
     </div>
@@ -20,7 +20,8 @@
   </main>
 
   <script>
-    if (localStorage.getItem('adminLoggedIn') !== 'true') {
+    // block direct access if not admin (local-only)
+    if (localStorage.getItem('grove_admin_logged_in') !== 'true') {
       window.location.href = 'lock.html';
     }
   </script>
