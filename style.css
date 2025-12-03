@@ -1,4 +1,3 @@
-/* style.css - sandbox theme */
 :root {
   --bg: #080808;
   --text: #d6ffd6;
@@ -13,8 +12,6 @@ body {
   font-family: Inter, Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -26,10 +23,9 @@ body {
 
 .container.small { max-width: 600px; }
 
-h1 { margin: 0 0 8px 0; font-size: 1.8rem; }
-h2 { margin: 0 0 16px 0; font-size: 1.1rem; color: var(--accent); }
+h1 { margin:0 0 8px; font-size:1.8rem; }
+h2 { margin:0 0 16px; font-size:1.1rem; color:var(--accent); }
 
-.controls { margin-top: 18px; }
 .controls button {
   background: var(--text);
   color: var(--bg);
@@ -40,24 +36,20 @@ h2 { margin: 0 0 16px 0; font-size: 1.1rem; color: var(--accent); }
   cursor: pointer;
   border-radius: 6px;
 }
-.controls button:hover { opacity: 0.9; }
+.controls button:hover { opacity:0.9; }
 
-.nav { margin-top: 18px; }
-.nav a { color: var(--accent); margin: 0 8px; text-decoration: none; }
+.nav a { color: var(--accent); margin:0 8px; text-decoration:none; }
 
 .form input, .panel-row input {
-  padding: 0.5rem;
-  margin: 8px 0;
-  width: 100%;
-  font-size: 1rem;
-  border-radius: 6px;
-  background: #001400;
-  color: var(--text);
-  border: 1px solid #003000;
+  padding:0.5rem;
+  margin:8px 0;
+  width:100%;
+  font-size:1rem;
+  border-radius:6px;
+  background:#001400;
+  color:var(--text);
+  border:1px solid #003000;
 }
 
-.panel-row { margin: 10px 0; display:flex; gap:8px; align-items:center; justify-content:center; }
+.panel-row { display:flex; gap:8px; align-items:center; justify-content:center; }
 .panel-row button { padding:0.5rem 1rem; border-radius:6px; }
-
-a { color: var(--accent); }
-pre { color: #bfffbf; background: var(--panel); padding: 1rem; border-radius: 6px; text-align:left; overflow:auto; }
