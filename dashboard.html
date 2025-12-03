@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Dashboard</title>
-<link rel="stylesheet" href="style.css">
-<script type="module" src="src/assets/js/counter.js"></script>
-<script type="module" src="src/assets/js/headphoneAlarm.js"></script>
-</head>
-<body>
-<h1>GrovePortal-Sandbox Dashboard</h1>
-<p>Uberman Timer: <span id="counter">0 days</span></p>
-<button onclick="playAlarm()">Play Alarm</button>
-<button onclick="stopAlarm()">Stop Alarm</button>
-</body>
-</html>
+<script type="module">
+if(localStorage.getItem('grove_admin_logged_in') !== 'true'){
+  window.location.href = 'lock.html';
+}
+
+import('./src/assets/js/headphoneAlarm.js').then(mod=>{
+  const btn = document.getElementById('test-alarm-btn');
+  const status = document.getElementById('alarm-status');
+  btn.addEventListener('click', async()=>{
+    status.textContent = 'Status: playing';
+    await mod.playAlarm();
+    setTimeout(()=>{status.textContent='Status: idle';},5000);
+  });
+});
+</script>
