@@ -1,96 +1,14 @@
-import { CONFIG as DEFAULT_CONFIG } from './config.default.js';
+let day = 0;
 
-let CONFIG = DEFAULT_CONFIG;
-
-(async () => {
-  try {
-    const local = await import('./config.local.js');
-    if (local && local.CONFIG) CONFIG = local.CONFIG;
-  } catch(e) {
-    // fallback to defaults
-  }
-})();
-
-const KEY = CONFIG.LOCAL_COUNTER_KEY || 'grove_uberman_day';
-
-export function getDayValue() {
-  const raw = localStorage.getItem(KEY);
-  const n = parseInt(raw, 10);
-  return Number.isNaN(n) ? 0 : n;
+export async function incrementDay() {
+    day++;
+    updateCounter();
 }
 
-export function setDayValue(val) {
-  const num = Number(val) || 0;
-  localStorage.setItem(KEY, String(num));
-  updateCounterDisplay();
-  return num;
+function updateCounter() {
+    const counterEl = document.getElementById("counter");
+    if (!counterEl) return;
+    counterEl.innerText = `${day} day${day !== 1 ? 's' : ''}`;
 }
 
-export function incrementDayValue() {
-  return setDayValue(getDayValue() + 1);
-}
-
-export function resetDayValue() {
-  return setDayValue(0);
-}
-
-function el(id) { return document.getElementById(id); }
-
-export function updateCounterDisplay() {
-  const display = el('counter-display');
-  const current = el('current-day');
-  const v = getDayValue();
-  if (display) display.textContent = String(v);
-  if (current) current.textContent = String(v);
-}
-
-const SCHEDULE = ["00:00","04:00","08:00","12:00","16:00","20:00"];
-
-function toMinutes(hm) {
-  const [h,m] = hm.split(":").map(Number);
-  return h*60 + (m||0);
-}
-
-function formatTimeFromMinutes(mins) {
-  const hh = Math.floor(mins / 60) % 24;
-  const mm = mins % 60;
-  return String(hh).padStart(2,'0') + ':' + String(mm).padStart(2,'0');
-}
-
-export function updateTimerDisplays() {
-  const timerEl = el('live-timer');
-  const nextEl = el('next-nap');
-  const remainingEl = el('time-remaining');
-
-  const now = new Date();
-  const nowMinutes = now.getHours()*60 + now.getMinutes();
-
-  let nextMinutes = null;
-  for (let s of SCHEDULE) {
-    const m = toMinutes(s);
-    if (m > nowMinutes) { nextMinutes = m; break; }
-  }
-  if (nextMinutes === null) nextMinutes = toMinutes(SCHEDULE[0]) + 24*60;
-
-  const diff = nextMinutes - nowMinutes;
-  const hrs = Math.floor(diff / 60);
-  const mins = diff % 60;
-  const secs = now.getSeconds();
-
-  if (timerEl) timerEl.textContent = now.toLocaleTimeString('en-US', { hour12:false }) + '.' + String(now.getMilliseconds()).padStart(3,'0');
-  if (nextEl) nextEl.textContent = formatTimeFromMinutes(nextMinutes % (24*60));
-  if (remainingEl) remainingEl.textContent = `${hrs}h ${mins}m ${secs}s`;
-}
-
-// Auto init
-document.addEventListener('DOMContentLoaded', () => {
-  updateCounterDisplay();
-  updateTimerDisplays();
-  setInterval(updateTimerDisplays, 1000);
-});
-
-// Async wrappers
-export async function getDay() { return getDayValue(); }
-export async function setDay(n) { return setDayValue(n); }
-export async function incrementDay() { return incrementDayValue(); }
-export async function resetDay() { return resetDayValue(); }
+setInterval(updateCounter, 1000);
