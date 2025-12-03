@@ -1,13 +1,5 @@
-# Node
 node_modules/
-
-# local env / secrets
+.next/
 .env
 .env.local
-src/assets/js/config.local.js
-
-# build / editors
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+.env.production
