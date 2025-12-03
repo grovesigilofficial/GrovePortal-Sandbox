@@ -1,0 +1,11 @@
+{
+  "name": "groveportal-sandbox",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "serve . -l 3000",
+    "dev": "live-server --port=3000 --open=./index.html"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
