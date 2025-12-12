@@ -1,54 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grove Portal — Uberman Tracker</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GroveSigilOfficial</title>
+  <style>
+    :root {
+      --bg: #000;
+      --text: #ff3a3a;
+      --glow: 0 0 18px rgba(255, 0, 40, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--bg);
+      font-family: "Oswald", system-ui, sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: var(--text);
+      font-size: clamp(32px, 8vw, 90px);
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-shadow: var(--glow);
+      animation: pulse 3.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 0.7; transform: scale(0.98); }
+      50%  { opacity: 1;   transform: scale(1.02); }
+      100% { opacity: 0.7; transform: scale(0.98); }
+    }
+  </style>
 </head>
-<body class="home">
-  <div class="container">
-    <h1>Grove Portal — Uberman Tracker</h1>
 
-    <div class="panels">
-      <section class="panel" id="countdownBlock">
-        <h2>Uberman begins in</h2>
-        <p class="big" id="startCountdown">— : — : —</p>
-        <p class="muted" id="startHint">(Set start from Admin)</p>
-      </section>
-
-      <section class="panel">
-        <h2>Next nap window (local)</h2>
-        <p class="big" id="nextNapCountdown">— : — : —</p>
-        <p class="muted">Next nap at <span id="nextNapAt">—:00</span></p>
-      </section>
-    </div>
-
-    <section class="panel" id="activeBlock" style="display:none">
-      <h2>Uberman Status</h2>
-      <p><strong>Day:</strong> <span id="publicDay">—</span></p>
-      <p><strong>Progress:</strong> <span id="publicProgress">—</span></p>
-      <p><strong>Time on Uberman (today):</strong> <span id="publicElapsed">—</span></p>
-      <p><strong>Current time:</strong> <span id="publicNow">—</span></p>
-      <p><strong>Next nap at:</strong> <span id="publicNextNap">—:00</span></p>
-    </section>
-
-    <nav class="tabs" style="margin-top:12px;">
-      <a class="tab" href="pages/page-uberman.html">Uberman Details</a> |
-      <a class="tab" href="pages/page-about.html">About</a> |
-      <a class="tab" href="pages/page-risk.html">Risks</a> |
-      <a class="tab" href="pages/page-contact.html">Contact / Subscribe</a>
-    </nav>
-
-    <section class="panel" id="follow">
-      <p class="note">Platform will evolve into a social network — follow admin: <a class="glow-link" href="https://instagram.com/b.leedvow" target="_blank" rel="noopener">@b.leedvow</a></p>
-    </section>
-
-    <footer>
-      <a class="button" href="lock.html">Admin Login</a>
-    </footer>
-  </div>
-
-  <script type="module" src="js/public/publicTimer.js"></script>
+<body>
+  <h1>GroveSigilOfficial</h1>
 </body>
 </html>
