@@ -1,4 +1,4 @@
-A/* =========================================================
+/* =========================================================
    FILE: /js/login.js
    PURPOSE: Login logic using Supabase
    REQUIREMENTS:
@@ -8,17 +8,10 @@ A/* =========================================================
 
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-/* =====================
-   SUPABASE INIT
-===================== */
-const supabaseUrl = "https://<YOUR_PROJECT_ID>.supabase.co"; // Replace with your Supabase project URL
-const supabaseKey = "<YOUR_PUBLIC_ANON_KEY>"; // Replace with your Supabase anon key
-
+const supabaseUrl = "https://YOUR_SUPABASE_PROJECT_URL.supabase.co"; // placeholder
+const supabaseKey = "YOUR_PUBLIC_ANON_KEY"; // placeholder
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-/* =====================
-   LOGIN HANDLER
-===================== */
 async function loginUser() {
   const email = document.getElementById("login-email")?.value.trim();
   const password = document.getElementById("login-password")?.value;
@@ -42,7 +35,4 @@ async function loginUser() {
   window.location.href = "index.html";
 }
 
-/* =====================
-   EXPORT TO WINDOW
-===================== */
 window.loginUser = loginUser;
