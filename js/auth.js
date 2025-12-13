@@ -12,9 +12,8 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 /* =====================
    SUPABASE INIT
 ===================== */
-/* REPLACE THESE WITH YOUR ACTUAL VALUES */
-const supabaseUrl = "https://YOUR_SUPABASE_PROJECT_URL.supabase.co";
-const supabaseKey = "YOUR_PUBLIC_ANON_KEY";
+const supabaseUrl = "https://<YOUR_PROJECT_ID>.supabase.co"; // Replace with your Supabase project URL
+const supabaseKey = "<YOUR_PUBLIC_ANON_KEY>"; // Replace with your Supabase anon key
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
