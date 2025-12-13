@@ -1,113 +1,161 @@
+<!-- =========================================================
+FILE: /login.html
+PURPOSE: Instagram-style Login / Sign Up page
+NOTES:
+- Default view = Sign Up
+- Toggles between Sign Up and Log In
+- Calls signupUser() from /js/auth.js
+- No backend logic here, UI only
+========================================================= -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GroveSigilOfficial • Sign Up / Login</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/components.css">
+  <title>Login • GroveSigilOfficial</title>
+
   <style>
+    :root {
+      --bg: #000;
+      --card: #111;
+      --text: #ff3a3a;
+      --muted: #999;
+      --border: #ff3a3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: #000;
-      color: #ff3a3a;
-      font-family: "Oswald", system-ui, sans-serif;
+      min-height: 100vh;
+      background: var(--bg);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      font-family: system-ui, sans-serif;
+      color: var(--text);
     }
 
-    .form-container {
-      background: #111;
-      padding: 40px;
-      border: 2px solid #ff3a3a;
-      border-radius: 12px;
-      max-width: 400px;
+    .card {
       width: 100%;
+      max-width: 360px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
       text-align: center;
     }
 
-    h2 { margin-bottom: 24px; }
+    h1 {
+      margin-bottom: 20px;
+      letter-spacing: 0.08em;
+    }
+
     input {
       width: 100%;
+      margin-bottom: 12px;
       padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ff3a3a;
-      border-radius: 6px;
       background: #000;
-      color: #ff3a3a;
-    }
-    button {
-      margin-top: 20px;
-      padding: 12px 20px;
-      width: 100%;
-      background: #ff3a3a;
-      color: #000;
-      border: none;
+      border: 1px solid var(--border);
       border-radius: 6px;
+      color: var(--text);
+    }
+
+    input::placeholder {
+      color: var(--muted);
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: transparent;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: var(--text);
+      color: #000;
+    }
+
+    .toggle {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--muted);
       cursor: pointer;
     }
-    button:hover { opacity: 0.9; }
-    .hidden { display: none; }
-    .error { color: #ff7777; margin-top: 8px; }
+
+    .toggle span {
+      color: var(--text);
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
-  <div class="form-container">
-    <h2 id="form-title">Sign Up</h2>
 
-    <!-- Step 1: Email -->
-    <div class="step" id="step-1">
-      <input type="email" id="email" placeholder="Email" required />
-      <div class="error" id="email-error"></div>
-      <button id="next-1">Next</button>
+  <div class="card">
+
+    <h1 id="formTitle">Sign Up</h1>
+
+    <!-- SIGN UP FORM -->
+    <div id="signupForm">
+      <input id="email" type="email" placeholder="Email" />
+      <input id="password" type="password" placeholder="Password" />
+      <input id="username" type="text" placeholder="Username" />
+      <input id="full-name" type="text" placeholder="Full name" />
+      <input id="dob" type="date" />
+
+      <button onclick="signupUser()">Sign Up</button>
     </div>
 
-    <!-- Step 2: Full Name -->
-    <div class="step hidden" id="step-2">
-      <input type="text" id="full-name" placeholder="Full Name" required />
-      <div class="error" id="name-error"></div>
-      <button id="next-2">Next</button>
+    <!-- LOGIN FORM (placeholder for next step) -->
+    <div id="loginForm" class="hidden">
+      <input id="login-email" type="email" placeholder="Email" />
+      <input id="login-password" type="password" placeholder="Password" />
+
+      <button>Log In</button>
     </div>
 
-    <!-- Step 3: Username -->
-    <div class="step hidden" id="step-3">
-      <input type="text" id="username" placeholder="Username" required />
-      <div class="error" id="username-error"></div>
-      <button id="next-3">Next</button>
-    </div>
-
-    <!-- Step 4: Password -->
-    <div class="step hidden" id="step-4">
-      <input type="password" id="password" placeholder="Password" required />
-      <input type="password" id="confirm-password" placeholder="Confirm Password" required />
-      <div class="error" id="password-error"></div>
-      <button id="next-4">Next</button>
-    </div>
-
-    <!-- Step 5: Date of Birth -->
-    <div class="step hidden" id="step-5">
-      <input type="date" id="dob" required />
-      <div class="error" id="dob-error"></div>
-      <button id="submit-signup">Sign Up</button>
-    </div>
-
-    <!-- Step 6: Login toggle -->
-    <div id="login-toggle" class="hidden" style="margin-top: 16px;">
-      Already have an account? <span id="show-login" style="cursor:pointer; text-decoration:underline;">Log In</span>
-    </div>
-
-    <!-- Login Step -->
-    <div class="step hidden" id="login-step">
-      <input type="email" id="login-email" placeholder="Email" required />
-      <input type="password" id="login-password" placeholder="Password" required />
-      <div class="error" id="login-error"></div>
-      <button id="login-btn">Log In</button>
+    <!-- TOGGLE -->
+    <div class="toggle" id="toggleText">
+      Already have an account? <span>Log in</span>
     </div>
 
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
-  <script src="js/auth.js"></script>
+  <!-- AUTH LOGIC -->
+  <script type="module" src="/js/auth.js"></script>
+
+  <!-- TOGGLE SCRIPT -->
+  <script>
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
+    const toggleText = document.getElementById("toggleText");
+    const formTitle = document.getElementById("formTitle");
+
+    let isSignup = true;
+
+    toggleText.onclick = () => {
+      isSignup = !isSignup;
+
+      signupForm.classList.toggle("hidden");
+      loginForm.classList.toggle("hidden");
+
+      formTitle.textContent = isSignup ? "Sign Up" : "Log In";
+      toggleText.innerHTML = isSignup
+        ? 'Already have an account? <span>Log in</span>'
+        : 'Don’t have an account? <span>Sign up</span>';
+    };
+  </script>
+
 </body>
 </html>
