@@ -12,9 +12,8 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 /* =====================
    SUPABASE INIT
 ===================== */
-const supabaseUrl = "https://<YOUR_PROJECT_ID>.supabase.co"; // Replace with your Supabase project URL
-const supabaseKey = "<YOUR_PUBLIC_ANON_KEY>"; // Replace with your Supabase anon key
-
+const supabaseUrl = "https://YOUR_SUPABASE_PROJECT_URL.supabase.co"; // placeholder
+const supabaseKey = "YOUR_PUBLIC_ANON_KEY"; // placeholder
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 /* =====================
@@ -33,51 +32,36 @@ async function signupUser() {
   }
 
   try {
-    /* =====================
-       CHECK EMAIL
-    ===================== */
-    const { data: emailExists, error: emailError } = await supabase
+    const { data: emailExists } = await supabase
       .from("profiles")
       .select("id")
       .eq("email", email)
       .maybeSingle();
 
-    if (emailError) throw emailError;
     if (emailExists) {
       alert("Email already in use");
       return;
     }
 
-    /* =====================
-       CHECK USERNAME
-    ===================== */
-    const { data: usernameExists, error: usernameError } = await supabase
+    const { data: usernameExists } = await supabase
       .from("profiles")
       .select("id")
       .eq("username", username)
       .maybeSingle();
 
-    if (usernameError) throw usernameError;
     if (usernameExists) {
       alert("Username already taken");
       return;
     }
 
-    /* =====================
-       CREATE AUTH USER
-    ===================== */
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (authError) throw authError;
-
     const userId = authData.user.id;
 
-    /* =====================
-       INSERT PROFILE
-    ===================== */
     const { error: profileError } = await supabase
       .from("profiles")
       .insert({
@@ -91,7 +75,6 @@ async function signupUser() {
     if (profileError) throw profileError;
 
     alert("Account created successfully");
-    // redirect to homepage or login page
     window.location.href = "index.html";
 
   } catch (err) {
@@ -99,7 +82,4 @@ async function signupUser() {
   }
 }
 
-/* =====================
-   EXPORT TO WINDOW
-===================== */
 window.signupUser = signupUser;
