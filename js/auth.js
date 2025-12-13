@@ -104,3 +104,4 @@ async function signupUser() {
    EXPORT TO WINDOW
 ===================== */
 window.signupUser = signupUser;
+
